@@ -8,16 +8,20 @@ dotenv.config({ path: './.env' });
 const logger = new Logger('Bootstrap');
 
 async function bootstrap() {
-  const port = process.env.PORT || 3000;
-  const httpsPort = process.env.HTTPS_PORT;
-  
+  let port = process.env.PORT || 3000;
+
   const keyPath = process.env.SSL_KEY_PATH;
   const certPath = process.env.SSL_CERT_PATH;
-  
+
   let app;
   let protocol = 'http';
-  
-  if (keyPath && certPath && fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+
+  if (
+    keyPath &&
+    certPath &&
+    fs.existsSync(keyPath) &&
+    fs.existsSync(certPath)
+  ) {
     // HTTPS Configuration
     const httpsOptions = {
       key: fs.readFileSync(keyPath),
@@ -26,23 +30,18 @@ async function bootstrap() {
     app = await NestFactory.create(AppModule, {
       httpsOptions,
     });
+    port = process.env.HTTPS_PORT;
     protocol = 'https';
     logger.log('Starting server with HTTPS...');
-    
   } else {
     // HTTP Configuration (Default)
     app = await NestFactory.create(AppModule);
     logger.log('Starting server with HTTP...');
-     app.enableCors();
-
-  
+    app.enableCors();
   }
-app.enableCors();
+  app.enableCors();
 
-  await app.listen(httpsPort);
-  console.log(`🚀 Server running on ${protocol}://localhost:${port}`);
-
-await app.listen(port);
+  await app.listen(port);
   console.log(`🚀 Server running on ${protocol}://localhost:${port}`);
 }
 
