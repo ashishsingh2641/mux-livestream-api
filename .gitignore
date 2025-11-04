@@ -3,8 +3,7 @@
 /node_modules
 /build
 
-server.crt
-server.key
+
 
 # Logs
 logs
