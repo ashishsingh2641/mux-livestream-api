@@ -37,7 +37,6 @@ async function bootstrap() {
     // HTTP Configuration (Default)
     app = await NestFactory.create(AppModule);
     logger.log('Starting server with HTTP...');
-    app.enableCors();
   }
   app.enableCors();
 
