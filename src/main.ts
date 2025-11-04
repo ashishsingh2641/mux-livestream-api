@@ -42,6 +42,7 @@ async function bootstrap() {
   app.enableCors();
 
   await app.listen(port);
+    
   console.log(`🚀 Server running on ${protocol}://localhost:${port}`);
 }
 
