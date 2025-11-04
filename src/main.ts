@@ -8,7 +8,7 @@ dotenv.config({ path: './.env' });
 const logger = new Logger('Bootstrap');
 
 async function bootstrap() {
-  let port = process.env.PORT || 3000;
+  let port;
 
   const keyPath = process.env.SSL_KEY_PATH;
   const certPath = process.env.SSL_CERT_PATH;
@@ -35,6 +35,7 @@ async function bootstrap() {
     logger.log('Starting server with HTTPS...');
   } else {
     // HTTP Configuration (Default)
+    port = process.env.PORT;
     app = await NestFactory.create(AppModule);
     logger.log('Starting server with HTTP...');
   }
